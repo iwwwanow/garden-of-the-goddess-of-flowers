@@ -1,0 +1,32 @@
+# Stage 1: build client
+FROM node:20-alpine AS client-build
+WORKDIR /build/client
+COPY client/package*.json ./
+RUN npm ci
+COPY client/ ./
+RUN npm run build
+
+# Stage 2: build server
+FROM node:20-alpine AS server-build
+WORKDIR /build/server
+COPY server/package*.json ./
+RUN npm ci
+COPY server/ ./
+RUN npm run build
+
+# Stage 3: production image
+FROM node:20-alpine
+WORKDIR /app
+
+COPY --from=server-build /build/server/dist ./dist
+COPY --from=server-build /build/server/node_modules ./node_modules
+COPY --from=server-build /build/server/package.json ./
+COPY --from=server-build /build/server/assets ./assets
+COPY --from=client-build /build/client/dist ./public
+
+RUN mkdir -p data
+
+ENV NODE_ENV=production
+EXPOSE 3000
+
+CMD ["node", "dist/index.js"]
