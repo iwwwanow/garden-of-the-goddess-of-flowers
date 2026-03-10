@@ -1,6 +1,7 @@
 # dev.md — план разработки garden-of-the-goddess-of-flowers
 
 ## Стек
+
 - **Frontend**: Vite + React + TypeScript + `@telegram-apps/telegram-ui`
 - **Backend**: Node.js + Express + TypeScript
 - **БД**: SQLite (better-sqlite3 + drizzle-orm)
@@ -28,7 +29,7 @@
 ### Фаза 0 — Инициализация
 
 - [ ] Сгенерировать первый цветок (`python3 flower-generator/src/generate.py`) → сохранить как `server/assets/flowers/season-1.png`
-- [ ] Инициализировать `server/` — `npm init`, `tsconfig.json`, зависимости (express, better-sqlite3, drizzle-orm, @types/*)
+- [ ] Инициализировать `server/` — `npm init`, `tsconfig.json`, зависимости (express, better-sqlite3, drizzle-orm, @types/\*)
 - [ ] Инициализировать `client/` — `npm create vite`, настроить `@telegram-apps/sdk` и `@telegram-apps/telegram-ui`
 - [ ] Создать `.env.example` (TELEGRAM_BOT_TOKEN, DATABASE_URL, PORT, CLIENT_URL)
 - [ ] Создать `docker-compose.yml` под локальную разработку (опционально)
@@ -63,6 +64,7 @@ seeds          — id, user_id, flower_id, quantity
 - [ ] `POST /seeds/share` — передать семена другому юзеру
 
 Игровая логика (cron, каждый день в midnight):
+
 - [ ] За каждый политый цветок: начислить `2^(day-1)` FD юзеру и художнику (owner of flower)
 - [ ] Если цветок не полили — стать `is_dried = true`, день не прибавлять
 - [ ] На 7-й день: сгенерировать семена по последовательности простых чисел (3, 7, 11, ...)
@@ -72,6 +74,7 @@ seeds          — id, user_id, flower_id, quantity
 ### Фаза 3 — Frontend (Telegram Mini App)
 
 Экраны:
+
 - [ ] **Home** — цветок юзера: изображение (с B&W фильтром если засох), день роста, FD баланс, кнопка "Полить"
 - [ ] **Flower detail** — полная карточка цветка (рост по дням, анимация если gif)
 - [ ] **Leaderboard** — список юзеров, отсортированных по FD
@@ -80,6 +83,7 @@ seeds          — id, user_id, flower_id, quantity
 - [ ] **Export** — скачать PNG цветка
 
 UI детали:
+
 - [ ] Засохший цветок: CSS фильтр `grayscale(100%)` + лейбл "засох"
 - [ ] Семена: иконка мешочка с эмблемой цветка
 - [ ] Кнопка полива недоступна если уже поливал сегодня (серая)
