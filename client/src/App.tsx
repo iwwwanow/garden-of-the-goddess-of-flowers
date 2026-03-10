@@ -16,7 +16,8 @@ export function App() {
   useEffect(() => {
     const isDev = import.meta.env.DEV;
     const tg = (window as any).Telegram?.WebApp;
-    const initData = tg ? (tg.ready(), tg.initData) : (isDev ? 'dev' : null);
+    if (tg) tg.ready();
+    const initData = tg?.initData || (isDev ? 'dev' : null);
 
     if (!initData) { setLoading(false); return; }
 
