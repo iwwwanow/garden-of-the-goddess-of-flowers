@@ -1,4 +1,4 @@
-- [ ] собери веб-интерфейс на svelte. стили используй из https://github.com/iwwwanow/owo
+- [ ] собери веб-интерфейс на svelte. стили используй из https://github.com/telegram-mini-apps-dev/TelegramUI
 - [ ] также напиши тг-бота и tg-mini-app
 - [ ] нужно опираться на бизнес-логику из @.dev/main.md
 - [ ] бд-sqlite
