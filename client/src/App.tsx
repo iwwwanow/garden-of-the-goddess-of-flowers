@@ -11,24 +11,29 @@ export function App() {
   const [tab, setTab] = useState<Tab>('home');
   const [me, setMe] = useState<MeResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const isDev = import.meta.env.DEV;
     const tg = (window as any).Telegram?.WebApp;
-    if (!tg) return;
-    tg.ready();
+    const initData = tg ? (tg.ready(), tg.initData) : (isDev ? 'dev' : null);
 
-    api.auth(tg.initData)
+    if (!initData) { setLoading(false); return; }
+
+    api.auth(initData)
       .then(({ token }) => {
         setToken(token);
         return api.me();
       })
       .then(setMe)
+      .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
 
   const refresh = () => api.me().then(setMe);
 
-  if (loading) return <div style={{ display: 'flex', justifyContent: 'center', padding: 48 }}>...</div>;
+  if (loading) return <div style={{ padding: 24 }}>Загрузка...</div>;
+  if (error) return <div style={{ padding: 24, color: 'red' }}>Ошибка: {error}</div>;
 
   return (
     <AppRoot>
