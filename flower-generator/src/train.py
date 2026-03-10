@@ -13,7 +13,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 image_size = 64
 batch_size = 64
 lr = 0.0002
-epochs = 200
+epochs = 50
 latent_dim = 100
 
 # Подготовка данных

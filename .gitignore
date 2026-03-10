@@ -1,5 +1,25 @@
+# Python
 .local
-venv/*
+venv/
 *__pycache__/
 *test-data
+*.pth
+flower-generator/outputs/
 
+# Node
+node_modules/
+dist/
+client/dist/
+
+# DB & data
+server/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Env
+.env
+!.env.example
+
+# OS
+.DS_Store
