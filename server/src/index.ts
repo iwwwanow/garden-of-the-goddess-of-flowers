@@ -14,13 +14,20 @@ const PORT = process.env.PORT ?? 3000;
 
 app.use(cors({ origin: process.env.CLIENT_URL ?? '*' }));
 app.use(express.json());
-app.use('/assets', express.static(path.join(__dirname, '../../assets')));
+app.use('/api/assets', express.static(path.join(__dirname, '../assets')));
 
-app.use('/auth', authRouter);
-app.use('/me', meRouter);
-app.use('/flowers', flowersRouter);
-app.use('/leaderboard', leaderboardRouter);
-app.use('/seeds', seedsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/me', meRouter);
+app.use('/api/flowers', flowersRouter);
+app.use('/api/leaderboard', leaderboardRouter);
+app.use('/api/seeds', seedsRouter);
+
+// Serve client static (populated in Docker via multi-stage build)
+const publicDir = path.join(__dirname, '../public');
+app.use(express.static(publicDir));
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(publicDir, 'index.html'));
+});
 
 // Daily cron: run at midnight
 function scheduleMidnight() {

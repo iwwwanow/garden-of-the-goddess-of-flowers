@@ -29,8 +29,6 @@ export async function runDailyTick() {
     const fd = fdForDay(uf.day);
 
     // Award FD to owner
-    await db.update(users).set({ fdBalance: db.$count(users) }).where(eq(users.id, uf.userId));
-    // Simple FD add via raw increment
     const owner = await db.select().from(users).where(eq(users.id, uf.userId)).get();
     if (owner) {
       await db.update(users).set({ fdBalance: owner.fdBalance + fd }).where(eq(users.id, owner.id));
