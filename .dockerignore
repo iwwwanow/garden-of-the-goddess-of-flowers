@@ -1,0 +1,15 @@
+**/node_modules
+**/dist
+client/.vite
+server/data
+**/.env
+!**/.env.example
+**/*.db
+**/*.db-shm
+**/*.db-wal
+venv/
+flower-generator/outputs/
+flower-generator/data/
+**/*.pth
+.git
+.github
