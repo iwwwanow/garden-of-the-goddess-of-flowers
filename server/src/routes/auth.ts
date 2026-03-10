@@ -14,17 +14,26 @@ router.post('/', async (req, res) => {
     return;
   }
 
-  const botToken = process.env.TELEGRAM_BOT_TOKEN!;
-  const data = verifyTelegramInitData(initData, botToken);
-  if (!data) {
-    res.status(401).json({ error: 'Invalid initData' });
-    return;
-  }
+  let telegramId: string;
+  let firstName: string;
+  let username: string | null;
 
-  const tgUser = JSON.parse(data['user'] ?? '{}');
-  const telegramId = String(tgUser.id);
-  const firstName = tgUser.first_name ?? 'User';
-  const username = tgUser.username ?? null;
+  if (initData === 'dev' && process.env.NODE_ENV !== 'production') {
+    telegramId = 'dev_user_1';
+    firstName = 'Dev';
+    username = 'devuser';
+  } else {
+    const botToken = process.env.TELEGRAM_BOT_TOKEN!;
+    const data = verifyTelegramInitData(initData, botToken);
+    if (!data) {
+      res.status(401).json({ error: 'Invalid initData' });
+      return;
+    }
+    const tgUser = JSON.parse(data['user'] ?? '{}');
+    telegramId = String(tgUser.id);
+    firstName = tgUser.first_name ?? 'User';
+    username = tgUser.username ?? null;
+  }
 
   // Upsert user
   let user = await db.select().from(users).where(eq(users.telegramId, telegramId)).get();
